@@ -153,7 +153,7 @@ function App() {
       <header className="app-header">
         <div className="logo">
           <span className="logo-icon">◈</span>
-          <span className="logo-text">ShaderLens</span>
+          <span className="logo-text">insightface</span>
         </div>
         <p className="tagline">Select to understand · Click to explore</p>
       </header>
@@ -166,9 +166,13 @@ function App() {
             onLeaveLine={handleLeaveLine}
             hoveredLine={hoveredLine}
             selectedLines={selectedLines}
+            lastClickedLine={lastClickedLine}
             onSelectLine={handleSelectLine}
             onParamClick={handleParamClick}
             activeParam={activeParam}
+            onAnalyze={handleAnalyze}
+            onClearSelection={handleClearSelection}
+            showAnalyzePopup={selectedLines.size > 0 && !interpretLoading && !interpretData}
           />
         </div>
 
@@ -186,7 +190,6 @@ function App() {
             error={interpretError}
             selectedLines={selectedLines}
             lines={lines}
-            onAnalyze={handleAnalyze}
             onClearSelection={handleClearSelection}
           />
           <VariationsPanel

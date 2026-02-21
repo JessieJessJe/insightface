@@ -18,7 +18,7 @@ app.post("/api/interpret", async (req, res) => {
 
   try {
     const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-opus-4-20250514",
       max_tokens: 2048,
       messages: [
         {
@@ -68,7 +68,7 @@ app.post("/api/variations", async (req, res) => {
 
   try {
     const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-opus-4-20250514",
       max_tokens: 2048,
       messages: [
         {
@@ -107,4 +107,4 @@ Return ONLY valid JSON, no markdown fences:
 });
 
 const PORT = 3001;
-app.listen(PORT, () => console.log(`ShaderLens API running on port ${PORT}`));
+app.listen(PORT, () => console.log(`insightface API running on port ${PORT}`));

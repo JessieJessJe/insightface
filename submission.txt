@@ -1,0 +1,15 @@
+A New Renaissance
+Very soon we might forget what coding is. Or maybe it becomes the new literature. The Sanskrit.
+insightface is a live code-interpreting tool that lets humans explore a codebase with an AI agent in real time.
+It is built around interpreting GLSL fragment shaders — through hovering, clicking, and selecting, users can explore parts of the code live. With AI interpretation and simulation in sandbox.
+How we shattered UI conventions:
+* It is reactive → code interpretation happens in real time. Hover a line, see what it does. No waiting. No asking.
+* It is agentic → the agent has full context of the shader at all times. AI is watching you — every gesture triggers reasoning, not retrieval.
+
+Claude's unique reasoning:
+Interpreting shader code is not autocomplete. To isolate what a single GLSL line does visually, Claude must reason about spatial math — how distance functions shape geometry, how values flow between lines, how a float becomes a color. It then writes a valid, compilable isolation shader from scratch. This requires genuine mathematical reasoning that weaker models cannot do reliably.
+Tech stack:
+* Raw WebGL — custom multi-context renderer powering simultaneous live canvases (main view, isolation previews, variation sandboxes) for real-time visual feedback
+* Claude API (Opus) — streams interpretation and isolation shader generation per interaction, with structured JSON output for reliable UI rendering
+* Client-side response caching + debounced hover triggers — keeps the interface responsive and stable under rapid exploration, minimizing redundant API calls
+* React + Vite + Express — lightweight frontend and backend to stay out of the way of the interaction loop

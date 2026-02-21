@@ -68,10 +68,20 @@ function highlightLine(line, lineIdx, onParamClick, activeParam) {
   return tokens;
 }
 
-export default function CodePanel({ lines, onHoverLine, onLeaveLine, hoveredLine, selectedLines, onSelectLine, onParamClick, activeParam }) {
+export default function CodePanel({
+  lines, onHoverLine, onLeaveLine, hoveredLine,
+  selectedLines, lastClickedLine, onSelectLine,
+  onParamClick, activeParam,
+  onAnalyze, onClearSelection, showAnalyzePopup,
+}) {
   const handleClick = useCallback((idx, e) => {
     onSelectLine(idx, e.shiftKey);
   }, [onSelectLine]);
+
+  const count = selectedLines.size;
+
+  // Find the bottom-most selected line to anchor the popup
+  const popupAnchor = lastClickedLine;
 
   return (
     <div className="code-panel">
@@ -85,6 +95,7 @@ export default function CodePanel({ lines, onHoverLine, onLeaveLine, hoveredLine
         {lines.map((line, idx) => {
           const isSelected = selectedLines.has(idx);
           const isHovered = hoveredLine === idx;
+          const isPopupAnchor = showAnalyzePopup && idx === popupAnchor;
           return (
             <div
               key={idx}
@@ -92,11 +103,22 @@ export default function CodePanel({ lines, onHoverLine, onLeaveLine, hoveredLine
               onMouseEnter={() => onHoverLine(idx)}
               onMouseLeave={onLeaveLine}
               onClick={(e) => handleClick(idx, e)}
+              style={isPopupAnchor ? { position: 'relative' } : undefined}
             >
               <span className="line-number">{String(idx + 1).padStart(2, ' ')}</span>
               <span className="line-content">
                 {highlightLine(line, idx, onParamClick, activeParam)}
               </span>
+              {isPopupAnchor && (
+                <div className="inline-analyze-popup" onClick={(e) => e.stopPropagation()}>
+                  <button className="analyze-btn" onClick={onAnalyze}>
+                    Analyze {count === 1 ? 'Line' : `${count} Lines`}
+                  </button>
+                  <button className="inline-clear-btn" onClick={onClearSelection} title="Clear selection">
+                    ×
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}

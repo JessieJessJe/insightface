@@ -16,11 +16,11 @@ function SelectedCodeBlock({ selectedLines, lines }) {
   );
 }
 
-export default function InterpretPanel({ data, loading, error, selectedLines, lines, onAnalyze, onClearSelection }) {
+export default function InterpretPanel({ data, loading, error, selectedLines, lines, onClearSelection }) {
   const hasSelection = selectedLines.size > 0;
   const count = selectedLines.size;
 
-  // Empty state: no selection, no data
+  // Empty state: no selection, no data, not loading
   if (!hasSelection && !data && !loading && !error) {
     return (
       <div className="interpret-panel">
@@ -81,22 +81,19 @@ export default function InterpretPanel({ data, loading, error, selectedLines, li
           <span>Could not interpret: {error}</span>
         </div>
         <div className="analyze-actions">
-          <button className="analyze-btn" onClick={onAnalyze}>Retry</button>
           <button className="clear-selection-btn" onClick={onClearSelection}>Clear</button>
         </div>
       </div>
     );
   }
 
-  // Preview state: selection exists, no data yet
+  // Selection exists but no analysis yet — just show placeholder
+  // (the Analyze button is in the inline popup in CodePanel)
   return (
     <div className="interpret-panel">
-      <SelectedCodeBlock selectedLines={selectedLines} lines={lines} />
-      <div className="analyze-actions">
-        <button className="analyze-btn" onClick={onAnalyze}>
-          Analyze {count === 1 ? 'Line' : `${count} Lines`}
-        </button>
-        <button className="clear-selection-btn" onClick={onClearSelection}>Clear</button>
+      <div className="interpret-placeholder">
+        <div className="interpret-placeholder-icon">◈</div>
+        <p>{count} line{count !== 1 ? 's' : ''} selected — click Analyze in the code panel.</p>
       </div>
     </div>
   );
